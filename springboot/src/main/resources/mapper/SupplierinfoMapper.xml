@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.SupplierinfoMapper">
+
+    <select id="selectAll" resultType="com.example.entity.Supplierinfo">
+        select `supplierinfo`.*, `customerinfo`.`customer_name` as supplierContact, `customerinfo`.`customer_phone` as supplierPhone from `supplierinfo`
+		left join `customerinfo` on `supplierinfo`.`customerinfo_id` = `customerinfo`.id
+
+        <where>
+			<if test="supplierName != null and supplierName != ''">
+				and `supplierinfo`.`supplier_name` like concat ('%', #{supplierName}, '%')
+			</if>
+			<if test="supplierContact != null and supplierContact != ''">
+				and `customerinfo`.`customer_name` like concat ('%', #{supplierContact}, '%')
+			</if>
+
+        </where>
+    </select>
+
+    <select id="selectById" resultType="com.example.entity.Supplierinfo">
+        select * from supplierinfo where id = #{id}
+    </select>
+
+    <delete id="deleteById">
+        delete from supplierinfo where  id = #{id}
+    </delete>
+
+</mapper>

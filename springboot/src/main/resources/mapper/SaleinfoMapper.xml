@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.SaleinfoMapper">
+
+    <select id="selectAll" resultType="com.example.entity.Saleinfo">
+        select `saleinfo`.*, `druginfo`.`drug_code` as drugCode, `druginfo`.`drug_name` as drugName from `saleinfo`
+		left join `druginfo` on `saleinfo`.`druginfo_id` = `druginfo`.id
+
+        <where>
+			<if test="drugCode != null and drugCode != ''">
+				and `druginfo`.`drug_code` like concat ('%', #{drugCode}, '%')
+			</if>
+			<if test="drugName != null and drugName != ''">
+				and `druginfo`.`drug_name` like concat ('%', #{drugName}, '%')
+			</if>
+			<if test="returnApply != null and returnApply != ''">
+				and `saleinfo`.`return_apply` like concat ('%', #{returnApply}, '%')
+			</if>
+			<if test="returnPos != null and returnPos != ''">
+				and `saleinfo`.`return_pos` like concat ('%', #{returnPos}, '%')
+			</if>
+
+        </where>
+    </select>
+
+    <select id="selectById" resultType="com.example.entity.Saleinfo">
+        select * from saleinfo where id = #{id}
+    </select>
+
+    <delete id="deleteById">
+        delete from saleinfo where  id = #{id}
+    </delete>
+
+</mapper>

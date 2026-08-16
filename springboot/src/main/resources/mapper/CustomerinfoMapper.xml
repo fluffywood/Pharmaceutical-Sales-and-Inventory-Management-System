@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.CustomerinfoMapper">
+
+    <select id="selectAll" resultType="com.example.entity.Customerinfo">
+        select `customerinfo`.* from `customerinfo`
+
+        <where>
+			<if test="customerName != null and customerName != ''">
+				and `customerinfo`.`customer_name` like concat ('%', #{customerName}, '%')
+			</if>
+			<if test="customerSex != null and customerSex != ''">
+				and `customerinfo`.`customer_sex` like concat ('%', #{customerSex}, '%')
+			</if>
+
+        </where>
+    </select>
+
+    <select id="selectById" resultType="com.example.entity.Customerinfo">
+        select * from customerinfo where id = #{id}
+    </select>
+
+    <delete id="deleteById">
+        delete from customerinfo where  id = #{id}
+    </delete>
+
+</mapper>

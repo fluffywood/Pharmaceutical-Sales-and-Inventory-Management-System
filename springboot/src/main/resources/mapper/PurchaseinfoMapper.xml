@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.PurchaseinfoMapper">
+
+    <select id="selectAll" resultType="com.example.entity.Purchaseinfo">
+        select `purchaseinfo`.*, `supplierinfo`.`supplier_name` as drugSupplier, `employeeinfo`.`employee_name` as purchaseMan, `druginfo`.`drug_code` as drugCode, `druginfo`.`drug_name` as drugName from `purchaseinfo`
+		left join `supplierinfo` on `purchaseinfo`.`supplierinfo_id` = `supplierinfo`.id
+		left join `employeeinfo` on `purchaseinfo`.`employeeinfo_id` = `employeeinfo`.id
+		left join `druginfo` on `purchaseinfo`.`druginfo_id` = `druginfo`.id
+
+        <where>
+			<if test="drugCode != null and drugCode != ''">
+				and `druginfo`.`drug_code` like concat ('%', #{drugCode}, '%')
+			</if>
+			<if test="drugName != null and drugName != ''">
+				and `druginfo`.`drug_name` like concat ('%', #{drugName}, '%')
+			</if>
+			<if test="drugSupplier != null and drugSupplier != ''">
+				and `supplierinfo`.`supplier_name` like concat ('%', #{drugSupplier}, '%')
+			</if>
+			<if test="purchaseMan != null and purchaseMan != ''">
+				and `employeeinfo`.`employee_name` like concat ('%', #{purchaseMan}, '%')
+			</if>
+			<if test="purchaseTransport != null and purchaseTransport != ''">
+				and `purchaseinfo`.`purchase_transport` like concat ('%', #{purchaseTransport}, '%')
+			</if>
+
+        </where>
+    </select>
+
+    <select id="selectById" resultType="com.example.entity.Purchaseinfo">
+        select * from purchaseinfo where id = #{id}
+    </select>
+
+    <delete id="deleteById">
+        delete from purchaseinfo where  id = #{id}
+    </delete>
+
+</mapper>

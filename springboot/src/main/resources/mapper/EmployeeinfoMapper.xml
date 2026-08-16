@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.EmployeeinfoMapper">
+
+    <select id="selectAll" resultType="com.example.entity.Employeeinfo">
+        select `employeeinfo`.*, `employee`.`employee_code` as employeeCode, `employee`.`name` as employeeName, `employee`.`phone` as employeePhone, `employee`.`email` as employeeEmail from `employeeinfo`
+		left join `employee` on `employeeinfo`.`employee_id` = `employee`.id
+
+        <where>
+			<if test="employeeCode != null and employeeCode != ''">
+				and `employee`.`employee_code` like concat ('%', #{employeeCode}, '%')
+			</if>
+			<if test="employeeName != null and employeeName != ''">
+				and `employee`.`name` like concat ('%', #{employeeName}, '%')
+			</if>
+			<if test="employeeId != null">
+				and `employeeinfo`.`employee_id` = #{employeeId}
+			</if>
+
+        </where>
+    </select>
+
+    <select id="selectById" resultType="com.example.entity.Employeeinfo">
+        select * from employeeinfo where id = #{id}
+    </select>
+
+    <delete id="deleteById">
+        delete from employeeinfo where  id = #{id}
+    </delete>
+
+</mapper>
